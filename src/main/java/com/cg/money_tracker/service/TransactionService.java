@@ -1,5 +1,7 @@
 package com.cg.money_tracker.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.cg.money_tracker.dto.TransactionResponse;
@@ -21,6 +23,17 @@ public class TransactionService {
             return new TransactionResponse<>("failed to save transaction", null);
         }
         return new TransactionResponse<>("saved succesfully", newT);
-
     }
+
+    public TransactionResponse<Transaction> getTransaction(int id) {
+        Optional<Transaction> t = repository.findById(id);
+        if (t.isEmpty()) {
+            return new TransactionResponse<>("transaction not found", null);
+        }
+        return new TransactionResponse<>("transaction found succesfully", t.get());
+    }
+
+
+
+
 }
