@@ -1,5 +1,6 @@
 package com.cg.money_tracker.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -33,6 +34,27 @@ public class TransactionService {
         return new TransactionResponse<>("transaction found succesfully", t.get());
     }
 
+    public TransactionResponse<List<Transaction>> getAllTransaction() {
+        List<Transaction> t = repository.findAll();
+        if (t.isEmpty()) {
+            return new TransactionResponse<>("transactions is empty", null);
+        }
+        return new TransactionResponse<>("transactions found succesfully", t);
+    }
+
+    public TransactionResponse<Transaction> updateTransaction(Transaction t) {
+        Optional<Transaction> toUpdateT = repository.findById(t.getId());
+        if (toUpdateT.isEmpty()) {
+            return new TransactionResponse<>("transaction not found", null);
+        }
+        
+        Transaction updatedT = toUpdateT.get();
+        updatedT.setAmount(t.getAmount());
+        updatedT.setCategory(t.getCategory());
+        updatedT.setDescription(t.getDescription());
+        repository.save(updatedT);
+        return new TransactionResponse<>("updated succesfully succesfully", updatedT);
+    }
 
 
 
