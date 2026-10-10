@@ -47,7 +47,7 @@ public class TransactionService {
         if (toUpdateT.isEmpty()) {
             return new TransactionResponse<>("transaction not found", null);
         }
-        
+
         Transaction updatedT = toUpdateT.get();
         updatedT.setAmount(t.getAmount());
         updatedT.setCategory(t.getCategory());
@@ -56,6 +56,24 @@ public class TransactionService {
         return new TransactionResponse<>("updated succesfully succesfully", updatedT);
     }
 
+    public TransactionResponse<Transaction> deleteById(int id) {
+        Optional<Transaction> t = repository.findById(id);
 
+        if (t.isEmpty()) {
+            return new TransactionResponse<>("transaction not found", null);
+        }
+        repository.deleteById(id);
+        return new TransactionResponse<>("transaction deleted successfully", t.get());
+    }
+
+    public TransactionResponse<List<Transaction>> deleteAll() {
+        List<Transaction> transactions = repository.findAll();
+
+        if (transactions.isEmpty()) {
+            return new TransactionResponse<>("transactions is empty", null);
+        }
+        repository.deleteAll();
+        return new TransactionResponse<>("all transactions deleted successfully", transactions);
+    }
 
 }
