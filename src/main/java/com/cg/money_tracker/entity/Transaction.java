@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -22,4 +23,11 @@ public class Transaction {
     private String category;
     private String description;
     private LocalDateTime transactionDateTime;
+
+    @PrePersist
+    public void setTransactionDateTime() {
+        if (transactionDateTime == null) {
+            transactionDateTime = LocalDateTime.now();
+        }
+    }
 }
